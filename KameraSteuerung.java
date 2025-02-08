@@ -31,16 +31,16 @@ public class KameraSteuerung {
             kamera.verschiebe(0, -5, 0); // Runter
         }
         if (tastatur.links()){
-            kamera.schwenkeHorizontal(-5);
+            kamera.schwenkeHorizontal(-5); // Links
         }
         if (tastatur.rechts()){
-            kamera.schwenkeHorizontal(5);
+            kamera.schwenkeHorizontal(5); // Rechts
         }
         if (tastatur.oben()){
-            kamera.schwenkeVertikal(-5);
+            kamera.schwenkeVertikal(-5); // Oben
         }
         if (tastatur.unten()){
-            kamera.schwenkeVertikal(5);
+            kamera.schwenkeVertikal(5); // Unten
         }
         if (tastatur.tab()) {
             option++; // Nächste Perspektive 
@@ -62,7 +62,7 @@ public class KameraSteuerung {
             }
             Sys.warte(100); // Kurze Pause
         }
-        Sys.warte(10); // Kurze Pause
+        Sys.warte(5); // Kurze Pause
     }
 
     public void setzePosition(int pX, int pY, int pZ){
