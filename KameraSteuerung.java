@@ -37,10 +37,10 @@ public class KameraSteuerung {
             kamera.schwenkeHorizontal(5); // Rechts
         }
         if (tastatur.oben()){
-            kamera.schwenkeVertikal(-5); // Oben
+            kamera.schwenkeVertikal(5); // Oben
         }
         if (tastatur.unten()){
-            kamera.schwenkeVertikal(5); // Unten
+            kamera.schwenkeVertikal(-5); // Unten
         }
         if (tastatur.tab()) {
             option++; // Nächste Perspektive 

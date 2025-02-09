@@ -31,4 +31,8 @@ public class Ball {
     public double gibRadius() {
         return radius;
     }
+    
+    public void setzePosition(int pX, int pY, int pZ) {
+        kugel.setzePosition(pX, pY, pZ);
+    }
 }

@@ -31,7 +31,9 @@ public class BowlingPin {
     private GLZylinder basis10;
     private GLKugel oberteil10;
 
-    public BowlingPin(double x, double z) {
+    private boolean umgeworfen; // Status des Pins
+
+    public BowlingPin() {
         // 1. Reihe
         basis1 = new GLZylinder(-6.4, 0, 185, 2.5, 10); //Zylinder unten P1
         basis1.drehe(90, 90, 0); // Zylinder 90° gedreht 
@@ -95,24 +97,96 @@ public class BowlingPin {
         basis10.setzeFarbe(0, 0, 100); // Farbe
         oberteil10 = new GLKugel(0, 6, 155, 2.5); // Kugel als oberer Teil P10
         oberteil10.setzeFarbe(0, 0, 100); // Farbe
+
+        umgeworfen = false; // Standardmäßig nicht umgeworfen
     }
 
-    /**
-    
-    
     // Methode zum Umwerfen des Pins
-    public void umwerfen() {
+    public void umwerfen(int position) {
         // Drehe alle Teile des Pins um 90° um die X-Achse
-        basis1.drehe(90, "X");
-        oberteil1.drehe(90, "X");
+        switch(position) {
+            case 0:
+                basis1.setzeDrehung(180, 0, 0);
+                oberteil1.setzeDrehung(90, 0, 0);
+                break;
+            case 1:
+                basis2.setzeDrehung(180, 0, 0);
+                oberteil2.setzeDrehung(90, 0, 0);
+                break;
+            case 2:
+                basis3.setzeDrehung(180, 0, 0);
+                oberteil3.setzeDrehung(90, 0, 0);
+                break;
+            case 3:
+                basis4.setzeDrehung(180, 0, 0);
+                oberteil4.setzeDrehung(90, 0, 0);
+                break;
+            case 4:
+                basis5.setzeDrehung(180, 0, 0);
+                oberteil5.setzeDrehung(90, 0, 0);
+                break;
+            case 5:
+                basis6.setzeDrehung(180, 0, 0);
+                oberteil6.setzeDrehung(90, 0, 0);
+                break;
+            case 6:
+                basis7.setzeDrehung(180, 0, 0);
+                oberteil7.setzeDrehung(90, 0, 0);
+                break;
+            case 7:
+                basis8.setzeDrehung(180, 0, 0);
+                oberteil8.setzeDrehung(90, 0, 0);
+                break;
+            case 8:
+                basis9.setzeDrehung(180, 0, 0);
+                oberteil9.setzeDrehung(90, 0, 0);
+                break;
+            case 9:
+                basis10.setzeDrehung(180, 0, 0);
+                oberteil10.setzeDrehung(90, 0, 0);
+                break;
+        }
+
     }
 
-    // Optional: Methode zum Zurücksetzen des Pins
+    // Methode zum Zurücksetzen des Pins
     public void zuruecksetzen() {
         // Setze alle Teile des Pins in die Ausgangsposition zurück
         basis1.setzeDrehung(90, 90, 0);
         oberteil1.setzeDrehung(0, 0, 0);
 
+        basis2.setzeDrehung(90, 90, 0);
+        oberteil2.setzeDrehung(0, 0, 0);
+
+        basis3.setzeDrehung(90, 90, 0);
+        oberteil3.setzeDrehung(0, 0, 0);
+
+        basis4.setzeDrehung(90, 90, 0);
+        oberteil4.setzeDrehung(0, 0, 0);
+
+        basis5.setzeDrehung(90, 90, 0);
+        oberteil5.setzeDrehung(0, 0, 0);
+
+        basis6.setzeDrehung(90, 90, 0);
+        oberteil6.setzeDrehung(0, 0, 0);
+
+        basis7.setzeDrehung(90, 90, 0);
+        oberteil7.setzeDrehung(0, 0, 0);
+
+        basis8.setzeDrehung(90, 90, 0);
+        oberteil8.setzeDrehung(0, 0, 0);
+
+        basis9.setzeDrehung(90, 90, 0);
+        oberteil9.setzeDrehung(0, 0, 0);
+
+        basis10.setzeDrehung(90, 90, 0);
+        oberteil10.setzeDrehung(0, 0, 0);
+
+        umgeworfen = false; // Status auf nicht umgeworfen setzen
     }
-    */
+
+    // Methode, um den Status des Pins zu überprüfen
+    boolean istUmgeworfen() {
+        return umgeworfen;
+    }
 }
