@@ -10,7 +10,8 @@ public class BowlingSpiel {
     private KameraSteuerung steuerung;
     private Ball ball;
     private GLQuader[] kollisionsQuader; // Array von Quadern für Kollisionserkennung
-    private BowlingPin pins; // Array für alle 10 Pins
+    private BowlingPin[] pins; // Array für alle 10 Pins
+    private Scoreboard scoreboard; // Scoreboard
 
     // Abmessungen Kollisionsquader
     private double quaderBreite = 5;  // Breite Quader
@@ -37,15 +38,17 @@ public class BowlingSpiel {
         bahn.setzeFarbe(255, 255, 255); // Weiße Farbe damit Textur hell genug
         bahn.setzeTextur("wood_floor_diff_4k.jpg");
 
+        // Scoreboard erstellen
+        scoreboard = new Scoreboard();
+
         // Array von Quadern für die Kollisionserkennung um alle 10 Pins
         kollisionsQuader = new GLQuader[10];
         double[] pinXPositionen = {-6.4, 6.4, -19.2, 19.2, 0, -12.8, 12.8, -6.4, 6.4, 0}; // X-Positionen der Pins
         double[] pinZPositionen = {185, 185, 185, 185, 175, 175, 175, 165, 165, 155}; // Z-Positionen der Pins
 
-        pins = new BowlingPin(); // Array für alle 10 Pins
-        
+        pins = new BowlingPin[10]; // Array für alle 10 Pins
         for (int i = 0; i < 10; i++) {
-            
+            pins[i] = new BowlingPin(pinXPositionen[i], pinZPositionen[i], i);
             kollisionsQuader[i] = new GLQuader(pinXPositionen[i], 0, pinZPositionen[i], quaderBreite, quaderHoehe, quaderTiefe);
             kollisionsQuader[i].setzeSichtbarkeit(false); // Quader unsichtbar machen
         }
@@ -55,10 +58,10 @@ public class BowlingSpiel {
 
             // Bewegung der Kugel
             if (input.istGedrueckt('i')) {
-                ball.bewege(0, 2.5); // Vorwärts
+                ball.bewege(0, 4.5); // Vorwärts
             }
             if (input.istGedrueckt('k')) {
-                ball.bewege(0, -2.5); // Rückwärts
+                ball.bewege(0, -4.5); // Rückwärts
             }
             if (input.istGedrueckt('j')) {
                 ball.bewege(2.5, 0); // Links
@@ -71,17 +74,27 @@ public class BowlingSpiel {
             for (int i = 0; i < 10; i++) {
                 if (kollisionErkannt(ball, kollisionsQuader[i])) {
                     System.out.println("Kollision mit Pin " + (i + 1) + " erkannt!");
-                    pins.umwerfen(i); // Pin umwerfen
+                    pins[i].starteUmwerfen(scoreboard); // Pin umwerfen
+                    scoreboard.erhoeheSpieler1Punkte(); // Erhöhe die Punkte für Spieler 1
                 }
             }
-            
-            // Pins zurücksetzen mit der Taste 'r' 
+
+            // Aktualisiere alle Pins (Animation)
+            for (BowlingPin pin : pins) {
+                pin.aktualisiere();
+            }
+
+            // Pins, Ball, Kamera und Scoreboard zurücksetzen mit der Taste r
             if (input.istGedrueckt('r')) {
-                pins.zuruecksetzen();
-                ball.setzePosition(0, 5, -200);
-                System.out.println("Alle Pins wurden zurückgesetzt.");
-                
-                Sys.warte(5000);
+                for (BowlingPin pin : pins) {
+                    pin.zuruecksetzen(); // Pins zurücksetzen
+                }
+                ball.setzePosition(0, 5, -200); // Ball zurücksetzen
+                steuerung.setzePosition(0, 100, -325); // Kamera zurücksetzen
+                steuerung.setzeBlickpunkt(0, 0, 0); // Blickpunkt zurücksetzen
+                scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
+                System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt.");
+                Sys.warte(5000); // Kurze Pause
             }
             Sys.warte(10);
         }
@@ -89,11 +102,13 @@ public class BowlingSpiel {
 
     // Methode zur Kollisionserkennung
     private boolean kollisionErkannt(Ball ball, GLQuader quader) {
+        // Position und Radius des Balles
         double ballX = ball.gibX();
         double ballY = ball.gibY();
         double ballZ = ball.gibZ();
         double radius = ball.gibRadius();
 
+        // Position des Quaders 
         double quaderX = quader.gibX();
         double quaderY = quader.gibY();
         double quaderZ = quader.gibZ();
@@ -116,7 +131,5 @@ public class BowlingSpiel {
 
         // Kollision, wenn Entfernung <= Radius
         return entfernung <= radius;
-        
-        
     }
 }

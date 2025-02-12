@@ -7,7 +7,7 @@ public class KameraSteuerung {
     public KameraSteuerung() {
         kamera = new GLSchwenkkamera();
         kamera.setzePosition(0, 100, -325); // Anfangsposition
-        kamera.setzeBlickpunkt(0, 0, 0);
+        kamera.setzeBlickpunkt(0, 0, 0); // Blickpunkt auf 0, 0, 0
 
     }
 
@@ -49,15 +49,15 @@ public class KameraSteuerung {
             }
             switch (option) {
                 case 0:
-                    kamera.setzePosition(0, 100, -325);
+                    kamera.setzePosition(0, 100, -325); // Kameraposition Hinten auf ganze Bahn
                     kamera.setzeBlickpunkt(0, 0, 0);
                     break;
                 case 1:
-                    kamera.setzePosition(0, 100, 10);
-                    kamera.setzeBlickpunkt(0, 5, 175);
+                    kamera.setzePosition(0, 100, 10); // Kameraposition Vorne auf direkt auf Kegel
+                    kamera.setzeBlickpunkt(0, 5, 175); // Blickpunkt auf Kegel
                     break;
                 case 2:
-                    //kamera.setzePosition();
+                    //kamera.setzePosition(); // Möglichkeit für dritte Kameraperspektive 
                     break;
             }
             Sys.warte(100); // Kurze Pause
