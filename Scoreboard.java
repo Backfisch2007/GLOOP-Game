@@ -7,7 +7,7 @@ public class Scoreboard {
     private GLTafel spieler2PunkteTafel; // Tafel für die Punkte von Spieler 2
     private GLTafel spieler1VersuchTafel; // Tafel für den Versuch von Spieler 1
     private GLTafel spieler2VersuchTafel; // Tafel für den Versuch von Spieler 2
-    
+
     private int spieler1Punkte; // Punktzahl für Spieler 1
     private int spieler2Punkte; // Punktzahl für Spieler 2
 
@@ -19,7 +19,7 @@ public class Scoreboard {
 
         // Tafeln für Spieler 1 und Spieler 2 erstellen
         spieler1Tafel = new GLTafel(quaderX + 100, quaderY, quaderZ + 3, 10, 10); // Position rechts
-        spieler1Tafel.setzeText("Spieler 1 Punkte:", 16); // Textgröße 16
+        spieler1Tafel.setzeText("Spieler 1:", 16); // Textgröße 16
         spieler1Tafel.setzeTextfarbe(0, 0, 0); // Schwarzer Text
         spieler1Tafel.setzeDrehung(180, 0, 180); // Text um 180 Grad um die X-Achse drehen
 
@@ -30,19 +30,17 @@ public class Scoreboard {
 
         // Tafeln für die Punkte von Spieler 1 und Spieler 2 darunter
         double punkteTafelY = quaderY - 20; // Position unterhalb der Spieler-Tafeln
-        spieler1PunkteTafel = new GLTafel(quaderX - 100, punkteTafelY, quaderZ + 3, 10, 10); // Position links
+        spieler1PunkteTafel = new GLTafel(quaderX + 100, punkteTafelY, quaderZ + 3, 10, 10); // Position links
         spieler1PunkteTafel.setzeText("Punkte: 0", 16); // Punktzahl für Spieler 1
         spieler1PunkteTafel.setzeTextfarbe(0, 0, 0); // Schwarzer Text
         spieler1PunkteTafel.setzeDrehung(180, 0, 180); // Text um 180 Grad um die X-Achse drehen
 
-        spieler2PunkteTafel = new GLTafel(quaderX + 100, punkteTafelY, quaderZ + 3, 10, 10); // Position rechts
+        spieler2PunkteTafel = new GLTafel(quaderX - 100, punkteTafelY, quaderZ + 3, 10, 10); // Position rechts
         spieler2PunkteTafel.setzeText("Punkte: 0", 16); // Punktzahl für Spieler 2
         spieler2PunkteTafel.setzeTextfarbe(0, 0, 0); // Schwarzer Text
         spieler2PunkteTafel.setzeDrehung(180, 0, 180); // Text um 180 Grad um die X-Achse drehen
-        
-        
-        
 
+        
         // Initialisiere Punktzahlen
         spieler1Punkte = 0;
         spieler2Punkte = 0;
@@ -66,5 +64,15 @@ public class Scoreboard {
         spieler2Punkte = 0;
         spieler1PunkteTafel.setzeText("0", 16); // Setze die Anzeige zurück
         spieler2PunkteTafel.setzeText("0", 16); // Setze die Anzeige zurück
+    }
+
+    public void setzeAktuellerSpieler(int spieler) {
+        if (spieler == 1) {
+            spieler1Tafel.setzeText("Spieler 1 (aktuell)", 16);
+            spieler2Tafel.setzeText("Spieler 2", 16);
+        } else {
+            spieler1Tafel.setzeText("Spieler 1", 16);
+            spieler2Tafel.setzeText("Spieler 2 (aktuell)", 16);
+        }
     }
 }

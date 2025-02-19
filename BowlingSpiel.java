@@ -12,6 +12,9 @@ public class BowlingSpiel {
     private GLQuader[] kollisionsQuader; // Array von Quadern für Kollisionserkennung
     private BowlingPin[] pins; // Array für alle 10 Pins
     private Scoreboard scoreboard; // Scoreboard
+    private int aktuellerSpieler; // Spieler 
+    private int versucheSpieler1; // Anzahl der Versuche für Spieler 1
+    private int versucheSpieler2; // Anzahl der Versuche für Spieler 2
 
     // Abmessungen Kollisionsquader
     private double quaderBreite = 5; // Breite Quader
@@ -46,11 +49,16 @@ public class BowlingSpiel {
         double[] pinXPositionen = { -6.4, 6.4, -19.2, 19.2, 0, -12.8, 12.8, -6.4, 6.4, 0 }; // X-Positionen der Pins
         double[] pinZPositionen = { 185, 185, 185, 185, 175, 175, 175, 165, 165, 155 }; // Z-Position der Pins
 
+        aktuellerSpieler = 1; // Startet mit Spieler 1
+        scoreboard.setzeAktuellerSpieler(1);
+        versucheSpieler1 = 0;
+        versucheSpieler2 = 0;
+
         pins = new BowlingPin[10]; // Array für alle 10 Pins
         for (int i = 0; i < 10; i++) {
             pins[i] = new BowlingPin(pinXPositionen[i], pinZPositionen[i], i);
             kollisionsQuader[i] = new GLQuader(pinXPositionen[i], 0, pinZPositionen[i], quaderBreite, quaderHoehe,
-                    quaderTiefe);
+                quaderTiefe);
             kollisionsQuader[i].setzeSichtbarkeit(false); // Quader unsichtbar machen
         }
 
@@ -71,24 +79,58 @@ public class BowlingSpiel {
                 ball.bewege(-2.5, 0); // Rechts
             }
 
-            // Kollisionserkennung für alle Pins
-            for (int i = 0; i < 10; i++) {
-                if (kollisionErkannt(ball, kollisionsQuader[i])) {
-                    System.out.println("Kollision mit Pin " + (i + 1) + " erkannt!");
-                    pins[i].starteUmwerfen(scoreboard); // Pin umwerfen
+            // Stoßen der Kugel
+            if (input.enter()){
+                if (aktuellerSpieler == 1) {
+                    versucheSpieler1++;
+                } else {
+                    versucheSpieler2++;
                 }
-            }
 
-            // Kollisionserkennung zwischen Pins
-            for (int i = 0; i < 10; i++) {
-                for (int j = i + 1; j < 10; j++) {
-                    if (kollisionErkannt(pins[i], pins[j])) {
-                        if (pins[i].istUmgeworfen() && !pins[j].istUmgeworfen()) {
-                            pins[j].starteUmwerfen(scoreboard);
-                        } else if (pins[j].istUmgeworfen() && !pins[i].istUmgeworfen()) {
-                            pins[i].starteUmwerfen(scoreboard);
+                while (ball.gibZ() < 200) { // Solange der Ball auf der Bahn ist
+                    ball.bewege(0, 8); // Bewegt den Ball in einer Stoßbewegung nach vorne
+                    Sys.warte(40);
+
+                    // Kollisionserkennung für alle Pins
+                    for (int i = 0; i < 10; i++) {
+                        if (kollisionErkannt(ball, kollisionsQuader[i])) {
+                            System.out.println("Kollision mit Pin " + (i + 1) + " erkannt!");
+                            pins[i].starteUmwerfen(scoreboard, aktuellerSpieler); // Pin umwerfen
                         }
                     }
+
+                    kollision();
+                    steuerung.steuerungsschleife(input);
+
+                    // Aktualisiere alle Pins (Animation)
+                    for (BowlingPin pin : pins) {
+                        pin.aktualisiere();
+                    }
+                    reset();
+                }
+
+                // Überbrückung der Wartezeit von zurücksetzen des Kugel zurücksetzen damit Pins trotzdem umfallen
+                for (int i = 0; i < 200; i++) {
+                    Sys.warte(10); // Warten
+                    // Aktualisiere alle Pins (Animation)
+                    for (BowlingPin pin : pins) {
+                        pin.aktualisiere();
+                    }
+                }
+
+                ball.setzePosition(0, 5, -200); // Ball zurücksetzen
+
+                // Wechsel des Spielers nach zwei Versuchen
+                if (aktuellerSpieler == 1 && versucheSpieler1 >= 2) {
+                    aktuellerSpieler = 2;
+                    versucheSpieler1 = 0;
+                    scoreboard.setzeAktuellerSpieler(2);
+                    System.out.println("Spieler 2 ist jetzt an der Reihe.");
+                } else if (aktuellerSpieler == 2 && versucheSpieler2 >= 2) {
+                    aktuellerSpieler = 1;
+                    versucheSpieler2 = 0;
+                    scoreboard.setzeAktuellerSpieler(1);
+                    System.out.println("Spieler 1 ist jetzt an der Reihe.");
                 }
             }
 
@@ -96,21 +138,10 @@ public class BowlingSpiel {
             for (BowlingPin pin : pins) {
                 pin.aktualisiere();
             }
-
-            // Pins, Ball, Kamera und Scoreboard zurücksetzen mit der Taste r
-            if (input.istGedrueckt('r')) {
-                for (BowlingPin pin : pins) {
-                    pin.zuruecksetzen(); // Pins zurücksetzen
-                }
-                ball.setzePosition(0, 5, -200); // Ball zurücksetzen
-                steuerung.setzePosition(0, 100, -325); // Kamera zurücksetzen
-                steuerung.setzeBlickpunkt(0, 0, 0); // Blickpunkt zurücksetzen
-                scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
-                System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt.");
-                Sys.warte(5000); // Kurze Pause
-            }
+            reset();
             Sys.warte(10);
         }
+        Sys.beenden();
     }
 
     // Methode zur Kollisionserkennung zwischen Ball und Quader
@@ -162,5 +193,35 @@ public class BowlingSpiel {
         // Kollision, wenn der Abstand kleiner als ein bestimmter Wert ist (z.B. 5
         // Einheiten)
         return entfernung < 5;
+    }
+
+    private void reset(){
+        // Pins, Ball, Kamera und (Scoreboard) zurücksetzen mit der Taste r
+        if (input.istGedrueckt('r')) {
+            for (BowlingPin pin : pins) {
+                pin.zuruecksetzen(); // Pins zurücksetzen
+            }
+            ball.setzePosition(0, 5, -200); // Ball zurücksetzen
+            steuerung.setzePosition(0, 100, -325); // Kamera zurücksetzen
+            steuerung.setzeBlickpunkt(0, 0, 0); // Blickpunkt zurücksetzen
+            //scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
+            System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt.");
+            Sys.warte(2000); // Kurze Pause
+        }
+    }
+
+    private void kollision(){
+        // Kollisionserkennung zwischen Pins
+        for (int i = 0; i < 10; i++) {
+            for (int j = i + 1; j < 10; j++) {
+                if (kollisionErkannt(pins[i], pins[j])) {
+                    if (pins[i].istUmgeworfen() && !pins[j].istUmgeworfen()) {
+                        pins[j].starteUmwerfen(scoreboard, aktuellerSpieler);
+                    } else if (pins[j].istUmgeworfen() && !pins[i].istUmgeworfen()) {
+                        pins[i].starteUmwerfen(scoreboard, aktuellerSpieler);
+                    }
+                }
+            }
+        }
     }
 }

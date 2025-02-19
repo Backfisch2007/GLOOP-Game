@@ -24,10 +24,14 @@ public class BowlingPin {
     }
 
     // Startet die Umwerf-Animation
-    public void starteUmwerfen(Scoreboard scoreboard) {
+    public void starteUmwerfen(Scoreboard scoreboard, int aktuellerSpieler) {
         if (!umgeworfen) {
-            scoreboard.erhoeheSpieler1Punkte(); // Erhöhe die Punkte für Spieler 1
-            scoreboard.erhoeheSpieler2Punkte(); // Erhöhe die Punkte für Spieler 2
+            if (aktuellerSpieler == 1) {
+                scoreboard.erhoeheSpieler1Punkte(); // Erhöhe die Punkte für Spieler 1
+            }
+            else {
+                scoreboard.erhoeheSpieler2Punkte(); // Erhöhe die Punkte für Spieler 2
+            }
         }
         umgeworfen = true;
     }
