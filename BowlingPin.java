@@ -24,46 +24,14 @@ public class BowlingPin {
     }
 
     // Startet die Umwerf-Animation
-    //public void starteUmwerfen(Scoreboard scoreboard) {
-    //  if (!umgeworfen) {
-    //    scoreboard.erhoeheSpieler1Punkte(); // Erhöhe die Punkte für Spieler 1
-    //  scoreboard.erhoeheSpieler2Punkte(); // Erhöhe die Punkte für Spieler 2
-    //}
-    //umgeworfen = true;
-    //}
-
-    public void starteUmwerfen(Scoreboard scoreboard, double ballX, double ballZ) { //!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public void starteUmwerfen(Scoreboard scoreboard) {
         if (!umgeworfen) {
             scoreboard.erhoeheSpieler1Punkte(); // Erhöhe die Punkte für Spieler 1
             scoreboard.erhoeheSpieler2Punkte(); // Erhöhe die Punkte für Spieler 2
         }
         umgeworfen = true;
-
-        // Bestimme die Richtung, aus der der Ball kommt
-        double deltaX = ballX - basis.gibX();
-        double deltaZ = ballZ - basis.gibZ();
-
-        // Setze die Drehrichtung basierend auf der Position des Balls
-        if (Math.abs(deltaX) > Math.abs(deltaZ)) {
-            // Ball kommt von links oder rechts
-            if (deltaX > 0) {
-                // Ball kommt von rechts, Pin fällt nach links
-                drehrichtung = -1; // Negative Drehung um die Z-Achse
-            } else {
-                // Ball kommt von links, Pin fällt nach rechts
-                drehrichtung = 1; // Positive Drehung um die Z-Achse
-            }
-        } else {
-            // Ball kommt von vorne oder hinten
-            if (deltaZ > 0) {
-                // Ball kommt von hinten, Pin fällt nach vorne
-                drehrichtung = -1; // Negative Drehung um die X-Achse
-            } else {
-                // Ball kommt von vorne, Pin fällt nach hinten
-                drehrichtung = 1; // Positive Drehung um die X-Achse
-            }
-        }
     }
+
 
     // Führt die Drehung schrittweise aus
     public void aktualisiere() {
@@ -106,5 +74,3 @@ public class BowlingPin {
         return basis.gibZ();
     }
 }
-
-
