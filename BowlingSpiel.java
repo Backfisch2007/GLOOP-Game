@@ -22,14 +22,14 @@ public class BowlingSpiel {
     private double quaderTiefe = 5; // Tiefe Quader
 
     public BowlingSpiel() {
-        himmel = new GLHimmel("rosendal_plains_2.jpg"); // Himmel
+        //himmel = new GLHimmel("rosendal_plains_2.jpg"); // Himmel
         input = new GLTastatur();
 
         licht = new GLLicht(0, 100, -325); // Lichtquelle 1
         licht2 = new GLLicht(0, 100, 125); // Lichtquelle 2
 
-        licht.setzeAbschwaechung(0.5); // Lichtquelle 1
-        licht2.setzeAbschwaechung(0.5); // Lichtquelle 2
+        licht.setzeAbschwaechung(0.5); // Lichtquelle 1 dunkler machen
+        licht2.setzeAbschwaechung(0.5); // Lichtquelle 2 dunkler machen
 
         ball = new Ball(0, -200); // Ball
 
@@ -39,10 +39,9 @@ public class BowlingSpiel {
 
         bahn = new GLQuader(0, -5, 0, 50, 5, 400); // Flacher Quader als Bahn
         bahn.setzeFarbe(255, 255, 255); // Weiße Farbe damit Textur hell genug
-        bahn.setzeTextur("wood_floor_diff_4k.jpg");
+        bahn.setzeTextur("wood_floor_diff_4k.jpg"); // Holztextur der Bahn
 
-        // Scoreboard erstellen
-        scoreboard = new Scoreboard();
+        scoreboard = new Scoreboard(); // Scoreboard erstellen
 
         // Array von Quadern für die Kollisionserkennung um alle 10 Pins
         kollisionsQuader = new GLQuader[10];
@@ -81,7 +80,8 @@ public class BowlingSpiel {
 
             // Stoßen der Kugel
             if (input.enter()){
-                if (aktuellerSpieler == 1) {
+                // Beim stoßen wird ein Versuch draufgerechnet
+                if (aktuellerSpieler == 1) { 
                     versucheSpieler1++;
                 } else {
                     versucheSpieler2++;
@@ -109,7 +109,7 @@ public class BowlingSpiel {
                     reset();
                 }
 
-                // Überbrückung der Wartezeit von zurücksetzen des Kugel zurücksetzen damit Pins trotzdem umfallen
+                // Überbrückung der Wartezeit von zurücksetzen der Kugel damit Pins trotzdem umfallen
                 for (int i = 0; i < 200; i++) {
                     Sys.warte(10); // Warten
                     // Aktualisiere alle Pins (Animation)

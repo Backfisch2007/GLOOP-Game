@@ -37,14 +37,14 @@ public class BowlingPin {
     }
 
 
-    // Führt die Drehung schrittweise aus
+    // Führt die Drehung aus
     public void aktualisiere() {
         if (umgeworfen && aktuellerWinkel < 90) {
             // Drehpunkt: Unterer Rand der Basis (Y = 0)
-            double drehpunktY = 0; // Drehpunkt auf dem Boden
+            double drehpunktZ = 50; // Drehpunkt auf dem Boden
             // Drehung um die X-Achse am unteren Ende
-            basis.drehe(2, 0, 0, basis.gibX(), drehpunktY, basis.gibZ());
-            oberteil.drehe(2, 0, 0, basis.gibX(), drehpunktY, basis.gibZ());
+            basis.drehe(2, 0, 0, basis.gibX(), basis.gibY(), drehpunktZ);
+            oberteil.drehe(2, 0, 0, basis.gibX(), basis.gibY(), drehpunktZ);
             aktuellerWinkel += 2;
         }
     }

@@ -28,7 +28,7 @@ public class Scoreboard {
         spieler2Tafel.setzeTextfarbe(0, 0, 0); // Schwarzer Text
         spieler2Tafel.setzeDrehung(180, 0, 180); // Text um 180 Grad um die X-Achse drehen
 
-        // Tafeln für die Punkte von Spieler 1 und Spieler 2 darunter
+        // Tafeln für die Punkte von Spieler 1 und Spieler 2 unter der anderen Tafel
         double punkteTafelY = quaderY - 20; // Position unterhalb der Spieler-Tafeln
         spieler1PunkteTafel = new GLTafel(quaderX + 100, punkteTafelY, quaderZ + 3, 10, 10); // Position links
         spieler1PunkteTafel.setzeText("Punkte: 0", 16); // Punktzahl für Spieler 1
@@ -65,7 +65,8 @@ public class Scoreboard {
         spieler1PunkteTafel.setzeText("0", 16); // Setze die Anzeige zurück
         spieler2PunkteTafel.setzeText("0", 16); // Setze die Anzeige zurück
     }
-
+    
+    // Methode zum anzeigen des aktuellen Spielers mit (aktuell) im Text
     public void setzeAktuellerSpieler(int spieler) {
         if (spieler == 1) {
             spieler1Tafel.setzeText("Spieler 1 (aktuell)", 16);

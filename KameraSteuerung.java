@@ -43,14 +43,14 @@ public class KameraSteuerung {
             kamera.schwenkeVertikal(-5); // Unten
         }
         if (tastatur.tab()) {
-            option++; // Nächste Perspektive 
+            option++; // Nächste Kameraperspektive 
             if (option == 2) {
                 option = 0;
             }
             switch (option) {
                 case 0:
                     kamera.setzePosition(0, 100, -325); // Kameraposition Hinten auf ganze Bahn
-                    kamera.setzeBlickpunkt(0, 0, 0);
+                    kamera.setzeBlickpunkt(0, 0, 0); // Blickpunkt auf Bahn
                     break;
                 case 1:
                     kamera.setzePosition(0, 100, 10); // Kameraposition Vorne auf direkt auf Kegel
