@@ -5,8 +5,8 @@ public class Scoreboard {
     private GLTafel spieler2Tafel; // Tafel zur Anzeige von "Spieler 2"
     private GLTafel spieler1PunkteTafel; // Tafel zur Anzeige der Punkte von Spieler 1
     private GLTafel spieler2PunkteTafel; // Tafel zur Anzeige der Punkte von Spieler 2
-    private GLTafel spieler1VersuchTafel; // Tafel für den Versuch von Spieler 1 (nicht genutzt)
-    private GLTafel spieler2VersuchTafel; // Tafel für den Versuch von Spieler 2 (nicht genutzt)
+    private GLTafel spieler1VersuchTafel; // Tafel für den Versuch von Spieler 1
+    private GLTafel spieler2VersuchTafel; // Tafel für den Versuch von Spieler 2
 
     private int spieler1Punkte; // Speichert die Punktzahl von Spieler 1
     private int spieler2Punkte; // Speichert die Punktzahl von Spieler 2
@@ -78,5 +78,27 @@ public class Scoreboard {
             spieler1Tafel.setzeText("Spieler 1", 16); // Entfernt "(aktuell)" bei Spieler 1
             spieler2Tafel.setzeText("Spieler 2 (aktuell)", 16); // Fügt "(aktuell)" zum Text von Spieler 2 hinzu
         }
+    }
+
+    // Getter für die Punkte von Spieler 1
+    public int getSpieler1Punkte() {
+        return spieler1Punkte; // Liefert die aktuelle Punktzahl von Spieler 1
+    }
+
+    // Getter für die Punkte von Spieler 2
+    public int getSpieler2Punkte() {
+        return spieler2Punkte; // Liefert die aktuelle Punktzahl von Spieler 2
+    }
+
+    // Setter für die Punkte von Spieler 1
+    public void setSpieler1Punkte(int punkte) {
+        spieler1Punkte = punkte; // Setzt die Punktzahl von Spieler 1
+        spieler1PunkteTafel.setzeText(Integer.toString(spieler1Punkte), 16); // Aktualisiert die Anzeige
+    }
+
+    // Setter für die Punkte von Spieler 2
+    public void setSpieler2Punkte(int punkte) {
+        spieler2Punkte = punkte; // Setzt die Punktzahl von Spieler 2
+        spieler2PunkteTafel.setzeText(Integer.toString(spieler2Punkte), 16); // Aktualisiert die Anzeige
     }
 }

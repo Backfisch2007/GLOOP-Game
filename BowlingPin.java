@@ -69,15 +69,14 @@ public class BowlingPin {
     // Aktualisiert die Drehung und Verschiebung des Pins beim Umfallen
     public void aktualisiere() {
         if (umgeworfen && aktuellerWinkel < 90) { // Nur ausführen, wenn der Pin umgeworfen ist und noch nicht 90 Grad erreicht hat
-            // Drehpunkt: Unterer Rand der Basis
-            double drehpunktY = 0; // Drehpunkt liegt am Boden (y = 0)
+            double drehpunktY = 0; // Drehpunkt am Boden
             double drehpunktZ = basis.gibZ(); // Aktuelle Z-Position als Basis für den Drehpunkt
 
             // Erhöht den Winkel schrittweise mit der Fallgeschwindigkeit
             aktuellerWinkel += fallGeschwindigkeit; // Addiert die Fallgeschwindigkeit zum Winkel
             if (aktuellerWinkel > 90) aktuellerWinkel = 90; // Begrenzt den Winkel auf maximal 90 Grad
 
-            // Dreht den Pin um die X-Achse für einen realistischen Kippeffekt
+            // Dreht den Pin um die X-Achse
             basis.drehe(-fallGeschwindigkeit, 0, 0, basis.gibX(), drehpunktY, drehpunktZ); // Dreht die Basis
             oberteil.drehe(-fallGeschwindigkeit, 0, 0, basis.gibX(), drehpunktY, drehpunktZ); // Dreht das Oberteil
 
