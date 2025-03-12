@@ -1,5 +1,8 @@
 import GLOOP.*;
 
+/**
+ * Die Hauptklasse des Bowling-Spiels. Verwaltet Spielumgebung, Pins, Ball und die Spielregeln.
+ */
 public class BowlingSpiel {
     private GLKamera kamera; // Kamera
     private GLQuader bahn; // Bowlingbahn als Quader
@@ -23,6 +26,9 @@ public class BowlingSpiel {
     private double quaderHoehe = 25; // Höhe der Kollisionsquader
     private double quaderTiefe = 5; // Tiefe der Kollisionsquader
 
+    /**
+     * Konstruktor für das Bowling-Spiel. Initialisiert die Bahn, den Ball, die Pins und das Scoreboard.
+     */
     public BowlingSpiel() {
         himmel = new GLHimmel("Hintergrund Bowling.png"); // Runterskaliert für mehr FPS
         input = new GLTastatur(); // Erstellt ein neues Tastatur-Objekt für Eingaben
@@ -141,7 +147,7 @@ public class BowlingSpiel {
                     rundeSpieler2++; // Erhöht den Runden-Zähler für Spieler 2
                     scoreboard.setzeAktuellerSpieler(1); // Markiert Spieler 1 als aktuell auf der Anzeigetafel
                     System.out.println("Spieler 1 ist jetzt an der Reihe. Runde: " + rundeSpieler1); // Ausgabe in der Konsole
-                    
+
                     // Prüft, ob das Spiel beendet ist
                     if (rundeSpieler1 > 3 && rundeSpieler2 > 3) { // Wenn beide Spieler 10 Runden gespielt haben (eigentlich 10)
                         spielBeendet = true; // Markiert das Spiel als beendet
@@ -154,19 +160,24 @@ public class BowlingSpiel {
                 pin.aktualisiere(); // Aktualisiert die Animation der Pins (z. B. wenn sie noch fallen)
             }
             reset(); // Prüft auf manuelles Zurücksetzen
+            komplettreset(); // Prüft auf manuelles komplettes Zurücksetzen
             Sys.warte(10); // Wartet 10 Millisekunden
         }
         Sys.beenden(); // Beendet das Programm
     }
 
-    // Methode zum Zurücksetzen der Pins
+    /**
+     * Setzt alle Pins zurück in ihre Ausgangsposition.
+     */
     private void resetPins() {
         for (BowlingPin pin : pins) { // Schleife über alle Pins
             pin.zuruecksetzen(); // Setzt jeden Pin auf seine Ausgangsposition zurück
         }
     }
 
-    // Methode zur Anzeige des Spielendes mit Gewinner
+    /**
+     * Zeigt das Spielende an und gibt den Gewinner oder ein Unentschieden aus.
+     */
     private void zeigeSpielende() {
         GLTafel endTafel = new GLTafel(0, 50, 0, 100, 50); // Erstellt eine Tafel in der Mitte der Szene
         endTafel.setzeTextfarbe(0, 0, 0); // Setzt die Textfarbe auf Schwarz
@@ -187,8 +198,13 @@ public class BowlingSpiel {
         // Wartet 5 Sekunden, damit der Spieler das Ergebnis sehen kann
         Sys.warte(5000);
     }
-    
-    // Methode zur Kollisionserkennung zwischen Ball und Quader
+
+    /**
+     * Überprüft, ob eine Kollision zwischen dem Ball und einem Quader stattgefunden hat.
+     * @param ball Der Ball
+     * @param quader Der Quader
+     * @return true, wenn eine Kollision erkannt wurde, sonst false
+     */
     private boolean kollisionErkannt(Ball ball, GLQuader quader) {
         // Position und Radius des Balls
         double ballX = ball.gibX(); // X-Position des Balls
@@ -221,7 +237,12 @@ public class BowlingSpiel {
         return entfernung <= radius; // True, wenn der Ball den Quader berührt
     }
 
-    // Methode zur Kollisionserkennung zwischen zwei Pins
+    /**
+     * Überprüft, ob eine Kollision zwischen zwei Pins stattgefunden hat.
+     * @param pin1 Der erste Pin
+     * @param pin2 Der zweite Pin
+     * @return true, wenn eine Kollision erkannt wurde, sonst false
+     */
     private boolean kollisionErkannt(BowlingPin pin1, BowlingPin pin2) {
         // Positionen der Pins
         double pin1X = pin1.gibX(); // X-Position des ersten Pins
@@ -238,7 +259,9 @@ public class BowlingSpiel {
         return entfernung < 5; // True, wenn die Pins sich berühren
     }
 
-    // Methode zur Behandlung von Kollisionen zwischen Pins
+    /**
+     * Behandelt Kollisionen zwischen Pins und startet gegebenenfalls die Umwerf-Animation.
+     */
     private void kollision() {
         // Kollisionserkennung zwischen Pins
         for (int i = 0; i < 10; i++) {
@@ -254,7 +277,9 @@ public class BowlingSpiel {
         }
     }
 
-    // Methode zum manuellen Zurücksetzen des Spiels
+    /**
+     * Setzt das Spielfeld manuell zurück, wenn die Taste 'r' gedrückt wird.
+     */
     private void reset() {
         // Pins, Ball, Kamera und (Scoreboard) zurücksetzen mit der Taste r
         if (input.istGedrueckt('r')) { // Wenn die Taste r gedrückt wird
@@ -265,7 +290,25 @@ public class BowlingSpiel {
             ball.setzeWinkel(0); // Setzt den Winkel des Balls auf 0 Grad zurück
             steuerung.setzePosition(0, 100, -325); // Setzt die Kamera auf die Standardposition zurück
             steuerung.setzeBlickpunkt(0, 0, 0); // Setzt den Blickpunkt der Kamera auf die Mitte der Bahn
-            //scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
+            System.out.println("Alle Pins, Ball und Kamera wurden zurückgesetzt."); // Ausgabe in der Konsole
+            Sys.warte(1000); // Wartet 1 Sekunde
+        }
+    }
+
+    /**
+     * Setzt das komplette Spiel manuell zurück, wenn die Taste 't' gedrückt wird
+     */
+    private void komplettreset() {
+        // Pins, Ball, Kamera und Scoreboard zurücksetzen mit der Taste t
+        if (input.istGedrueckt('t')) { // Wenn die Taste t gedrückt wird
+            for (BowlingPin pin : pins) { // Schleife über alle Pins
+                pin.zuruecksetzen(); // Setzt jeden Pin zurück
+            }
+            ball.setzePosition(0, 5, -200); // Setzt den Ball auf die Startposition zurück
+            ball.setzeWinkel(0); // Setzt den Winkel des Balls auf 0 Grad zurück
+            steuerung.setzePosition(0, 100, -325); // Setzt die Kamera auf die Standardposition zurück
+            steuerung.setzeBlickpunkt(0, 0, 0); // Setzt den Blickpunkt der Kamera auf die Mitte der Bahn
+            scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
             System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt."); // Ausgabe in der Konsole
             Sys.warte(1000); // Wartet 1 Sekunde
         }

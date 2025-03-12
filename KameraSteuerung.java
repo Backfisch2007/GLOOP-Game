@@ -1,16 +1,25 @@
 import GLOOP.*;
 
+/**
+ * Verwaltet die Kamera und ihre Steuerung im Spiel.
+ */
 public class KameraSteuerung {
     private GLSchwenkkamera kamera;
     int option = 0; // Variable zur Auswahl der Kameraperspektive (0 = hinten, 1 = vorne)
 
+    /**
+     * Konstruktor für die KameraSteuerung. Erstellt eine Schwenkkamera und setzt ihre Anfangsposition.
+     */
     public KameraSteuerung() {
         kamera = new GLSchwenkkamera(); // Erstellt eine neue Schwenkkamera
         kamera.setzePosition(0, 100, -325); // Setzt die Anfangsposition der Kamera
         kamera.setzeBlickpunkt(0, 0, 0); // Setzt den Punkt, auf den die Kamera schaut (Mitte der Bahn)
     }
 
-    // Schleife zur Steuerung der Kamera mit Tastatureingaben
+    /**
+     * Steuert die Kamera basierend auf Tastatureingaben.
+     * @param tastatur Das Tastatur-Objekt für die Eingabe
+     */
     public void steuerungsschleife(GLTastatur tastatur) {
         if (tastatur.istGedrueckt('a')) { // Wenn Taste a gedrückt ist
             kamera.verschiebe(5, 0, 0); // Bewegt die Kamera 5 Einheiten nach links
@@ -65,12 +74,22 @@ public class KameraSteuerung {
         Sys.warte(5); // 5 Millisekunden Pause
     }
 
-    // Methode zum manuellen Setzen der Kameraposition
+    /**
+     * Setzt die Position der Kamera manuell.
+     * @param pX X-Position
+     * @param pY Y-Position
+     * @param pZ Z-Position
+     */
     public void setzePosition(int pX, int pY, int pZ) {
         kamera.setzePosition(pX, pY, pZ); // Setzt die Kamera auf die angegebenen Koordinaten
     }
 
-    // Methode zum manuellen Setzen des Blickpunkts der Kamera
+    /**
+     * Setzt den Blickpunkt der Kamera manuell.
+     * @param pX X-Position des Blickpunkts
+     * @param pY Y-Position des Blickpunkts
+     * @param pZ Z-Position des Blickpunkts
+     */
     public void setzeBlickpunkt(int pX, int pY, int pZ) {
         kamera.setzeBlickpunkt(pX, pY, pZ); // Setzt den Blickpunkt
     }

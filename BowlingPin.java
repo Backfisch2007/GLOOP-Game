@@ -1,5 +1,8 @@
 import GLOOP.*;
 
+/**
+ * Repräsentiert einen Bowling-Pin im Spiel.
+ */
 public class BowlingPin {
     private GLZylinder basis; // Unterteil des Pins (Zylinder)
     private GLKugel oberteil; // Oberteil des Pins (Kugel)
@@ -10,12 +13,17 @@ public class BowlingPin {
     private double vekX, vekZ; // Vektoren für die Richtung der Verschiebung beim Umfallen
     private double fallGeschwindigkeit; // Steuert, wie schnell der Pin umfällt
 
-    // Konstruktor für einen Bowling-Pin
+    /**
+     * Konstruktor für einen Bowling-Pin. Erstellt die Basis und das Oberteil des Pins an der angegebenen Position.
+     * @param pX X-Position des Pins
+     * @param pZ Z-Position des Pins
+     * @param pPosition Eindeutige Nummer des Pins (0 bis 9)
+     */
     public BowlingPin(double pX, double pZ, int pPosition) {
         position = pPosition; // Setzt die Position des Pins (z. B. 0 für den ersten Pin)
         startX = pX; // Speichert die Start-X-Position fürs Zurücksetzen
         startZ = pZ; // Speichert die Start-Z-Position fürs Zurücksetzen
-        
+
         // Erstellt den unteren Teil des Pins (Zylinder)
         basis = new GLZylinder(pX, 5, pZ, 2.5, 15); // Position (x, y, z), Radius 2.5, Höhe 15
         basis.drehe(90, 90, 0); // Dreht den Zylinder um 90 Grad (aufrecht stellen)
@@ -30,7 +38,11 @@ public class BowlingPin {
         fallGeschwindigkeit = 5; // Geschwindigkeit des Umfallens (höher = schneller)
     }
 
-    // Startet die Umwerf-Animation des Pins (mit Zufälligkeit)
+    /**
+     * Startet die Umwerf-Animation des Pins und erhöht die Punkte des aktuellen Spielers.
+     * @param scoreboard Das Scoreboard, das die Punkte verwaltet
+     * @param aktuellerSpieler Der aktuelle Spieler (1 oder 2)
+     */
     public void starteUmwerfen(Scoreboard scoreboard, int aktuellerSpieler) {
         if (!umgeworfen) { // Nur ausführen, wenn der Pin noch nicht umgeworfen ist
             if (aktuellerSpieler == 1) { // Wenn Spieler 1 dran ist
@@ -66,7 +78,9 @@ public class BowlingPin {
         }
     }
 
-    // Aktualisiert die Drehung und Verschiebung des Pins beim Umfallen
+    /**
+     * Aktualisiert die Drehung und Verschiebung des Pins beim Umfallen.
+     */
     public void aktualisiere() {
         if (umgeworfen && aktuellerWinkel < 90) { // Nur ausführen, wenn der Pin umgeworfen ist und noch nicht 90 Grad erreicht hat
             double drehpunktY = 0; // Drehpunkt am Boden
@@ -91,7 +105,9 @@ public class BowlingPin {
         }
     }
 
-    // Setzt den Pin zurück in seine Ausgangsposition
+    /**
+     * Setzt den Pin zurück in seine Ausgangsposition.
+     */
     public void zuruecksetzen() {
         basis.setzeDrehung(90, 90, 0); // Setzt die Drehung der Basis zurück (aufrecht)
         oberteil.setzeDrehung(0, 0, 0); // Setzt die Drehung des Oberteils zurück
@@ -101,17 +117,26 @@ public class BowlingPin {
         aktuellerWinkel = 0; // Setzt den Winkel zurück auf 0
     }
 
-    // Gibt zurück, ob der Pin umgeworfen ist
+    /**
+     * Gibt zurück, ob der Pin umgeworfen ist.
+     * @return true, wenn der Pin umgeworfen ist, sonst false
+     */
     public boolean istUmgeworfen() {
         return umgeworfen; // Rückgabewert true, wenn umgeworfen, sonst false
     }
 
-    // Gibt die X-Position des Pins zurück
+    /**
+     * Gibt die X-Position des Pins zurück.
+     * @return X-Position des Pins
+     */
     public double gibX() {
         return basis.gibX(); // Liefert die aktuelle X-Position der Basis
     }
 
-    // Gibt die Z-Position des Pins zurück
+    /**
+     * Gibt die Z-Position des Pins zurück.
+     * @return Z-Position des Pins
+     */
     public double gibZ() {
         return basis.gibZ(); // Liefert die aktuelle Z-Position der Basis
     }
