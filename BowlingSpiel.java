@@ -18,9 +18,9 @@ public class BowlingSpiel {
     private int aktuellerSpieler; // Speichert welcher Spieler gerade dran ist (1 oder 2)
     private int versucheSpieler1; // Zählt die Versuche von Spieler 1 in der aktuellen Runde
     private int versucheSpieler2; // Zählt die Versuche von Spieler 2 in der aktuellen Runde
-    private int rundeSpieler1; // Aktuelle Runde für Spieler 1
-    private int rundeSpieler2; // Aktuelle Runde für Spieler 2
-    private boolean spielBeendet; // Markiert, ob das Spiel vorbei ist
+    private int rundeSpieler1; // Runde für Spieler 1
+    private int rundeSpieler2; // Runde für Spieler 2
+    private boolean spielBeendet; // Guckt, ob das Spiel vorbei ist
 
     private double quaderBreite = 5; // Breite der Kollisionsquader
     private double quaderHoehe = 25; // Höhe der Kollisionsquader
@@ -30,13 +30,13 @@ public class BowlingSpiel {
      * Konstruktor für das Bowling-Spiel. Initialisiert die Bahn, den Ball, die Pins und das Scoreboard.
      */
     public BowlingSpiel() {
-        himmel = new GLHimmel("Hintergrund Bowling.png"); // Runterskaliert für mehr FPS
-        input = new GLTastatur(); // Erstellt ein neues Tastatur-Objekt für Eingaben
+        himmel = new GLHimmel("Hintergrund Bowling.png"); // Hintergrund
+        input = new GLTastatur();
 
-        licht = new GLLicht(0, 100, -325); // Licht 1: Position über dem Start der Bahn
-        licht2 = new GLLicht(0, 100, 125); // Licht 2: Position weiter hinten für bessere Ausleuchtung
-        licht.setzeAbschwaechung(0.5); // Macht das Licht etwas dunkler
-        licht2.setzeAbschwaechung(0.5); // Macht das Licht etwas dunkler
+        licht = new GLLicht(0, 100, -325); // Licht 1: Über dem Start der Bahn
+        licht2 = new GLLicht(0, 100, 125); // Licht 2: etwas weiter hinten für gute Beleuchtung
+        licht.setzeAbschwaechung(0.5); // dimmt das Licht etwas
+        licht2.setzeAbschwaechung(0.5);
 
         ball = new Ball(0, -200); // Erstellt Ball
 
@@ -57,11 +57,11 @@ public class BowlingSpiel {
 
         aktuellerSpieler = 1; // Startet mit Spieler 1
         scoreboard.setzeAktuellerSpieler(1); // Markiert Spieler 1 als aktuell auf der Anzeigetafel
-        versucheSpieler1 = 0; // Startet mit 0 Versuchen für Spieler 1 in der aktuellen Runde
-        versucheSpieler2 = 0; // Startet mit 0 Versuchen für Spieler 2 in der aktuellen Runde
-        rundeSpieler1 = 1; // Startet mit Runde 1 für Spieler 1
-        rundeSpieler2 = 1; // Startet mit Runde 1 für Spieler 2
-        spielBeendet = false; // Spiel ist noch nicht beendet
+        versucheSpieler1 = 0; // Versuche der Spieler auf 0 gesetzt
+        versucheSpieler2 = 0;
+        rundeSpieler1 = 1; // Runden auf 1 gesetzt
+        rundeSpieler2 = 1;
+        spielBeendet = false;
 
         pins = new BowlingPin[10]; // Array für BowlingPins
         for (int i = 0; i < 10; i++) { // Schleife zum Erstellen der Pins und Kollisionsquader
@@ -74,41 +74,41 @@ public class BowlingSpiel {
             steuerung.steuerungsschleife(input); // Aktualisiert die Kamerasteuerung
 
             // Winkel einstellen mit Tasten (vor dem Stoß)
-            if (input.istGedrueckt('u')) { // Wenn Taste u gedrückt ist
+            if (input.istGedrueckt('u')) {
                 ball.setzeWinkel(ball.gibWinkel() + 2); // Erhöht den Winkel des Balls um 2 Grad nach links 
                 System.out.println("Winkel: " + ball.gibWinkel()); // Gibt den aktuellen Winkel in der Konsole aus
             }
-            if (input.istGedrueckt('o')) { // Wenn Taste o gedrückt ist
+            if (input.istGedrueckt('o')) {
                 ball.setzeWinkel(ball.gibWinkel() - 2); // Verringert den Winkel des Balls um 2 Grad nach rechts
                 System.out.println("Winkel: " + ball.gibWinkel()); // Gibt den aktuellen Winkel in der Konsole aus
             }
 
             // Bewegung der Kugel vor dem Stoß
-            if (input.istGedrueckt('j')) { // Wenn Taste j gedrückt ist
+            if (input.istGedrueckt('j')) {
                 ball.bewege(2.5, 0); // Bewegt den Ball 2.5 Einheiten nach links
             }
-            if (input.istGedrueckt('l')) { // Wenn Taste l gedrückt ist
+            if (input.istGedrueckt('l')) {
                 ball.bewege(-2.5, 0); // Bewegt den Ball 2.5 Einheiten nach rechts
             }
 
             // Stoßen der Kugel
-            if (input.enter()) { // Wenn die Enter-Taste gedrückt wird
-                if (aktuellerSpieler == 1) { // Wenn Spieler 1 dran ist
-                    versucheSpieler1++; // Erhöht die Anzahl der Versuche von Spieler 1 in der aktuellen Runde
-                    System.out.println("Spieler 1, Runde " + rundeSpieler1 + ", Versuch " + versucheSpieler1); // Ausgabe der aktuellen Runde und des Versuchs
-                } else { // Wenn Spieler 2 dran ist
-                    versucheSpieler2++; // Erhöht die Anzahl der Versuche von Spieler 2 in der aktuellen Runde
-                    System.out.println("Spieler 2, Runde " + rundeSpieler2 + ", Versuch " + versucheSpieler2); // Ausgabe der aktuellen Runde und des Versuchs
+            if (input.enter()) {
+                if (aktuellerSpieler == 1) {
+                    versucheSpieler1++; // Erhöht die Anzahl der Versuche von Spieler 1
+                    System.out.println("Spieler 1, Runde " + rundeSpieler1 + ", Versuch " + versucheSpieler1);
+                } else {
+                    versucheSpieler2++; // Erhöht die Anzahl der Versuche von Spieler 2
+                    System.out.println("Spieler 2, Runde " + rundeSpieler2 + ", Versuch " + versucheSpieler2);
                 }
 
                 while (ball.gibZ() < 200) { // Solange der Ball auf der Bahn ist
-                    ball.bewege(0, 8); // Bewegt den Ball 8 Einheiten vorwärts
-                    Sys.warte(40); // Wartet 40 Millisekunden
+                    ball.bewege(0, 8);
+                    Sys.warte(40);
 
                     // Kollisionserkennung für alle Pins
                     for (int i = 0; i < 10; i++) { // Schleife über alle 10 Pins
                         if (kollisionErkannt(ball, kollisionsQuader[i])) { // Wenn der Ball den Kollisionsquader trifft
-                            System.out.println("Kollision mit Pin " + (i + 1) + " erkannt!"); // Ausgabe in der Konsole
+                            System.out.println("Kollision mit Pin " + (i + 1) + " erkannt!");
                             pins[i].starteUmwerfen(scoreboard, aktuellerSpieler); // Startet die Umwerf-Animation des Pins
                         }
                     }
@@ -149,7 +149,7 @@ public class BowlingSpiel {
                     System.out.println("Spieler 1 ist jetzt an der Reihe. Runde: " + rundeSpieler1); // Ausgabe in der Konsole
 
                     // Prüft, ob das Spiel beendet ist
-                    if (rundeSpieler1 > 3 && rundeSpieler2 > 3) { // Wenn beide Spieler 10 Runden gespielt haben (eigentlich 10)
+                    if (rundeSpieler1 > 10 && rundeSpieler2 > 10) { // Wenn beide Spieler 10 Runden gespielt haben
                         spielBeendet = true; // Markiert das Spiel als beendet
                         zeigeSpielende(); // Zeigt das Spielende mit Gewinner an
                     }
@@ -159,11 +159,11 @@ public class BowlingSpiel {
             for (BowlingPin pin : pins) { // Schleife über alle Pins
                 pin.aktualisiere(); // Aktualisiert die Animation der Pins (z. B. wenn sie noch fallen)
             }
-            reset(); // Prüft auf manuelles Zurücksetzen
-            komplettreset(); // Prüft auf manuelles komplettes Zurücksetzen
-            Sys.warte(10); // Wartet 10 Millisekunden
+            reset();
+            komplettreset();
+            Sys.warte(10);
         }
-        Sys.beenden(); // Beendet das Programm
+        Sys.beenden();
     }
 
     /**
@@ -207,30 +207,30 @@ public class BowlingSpiel {
      */
     private boolean kollisionErkannt(Ball ball, GLQuader quader) {
         // Position und Radius des Balls
-        double ballX = ball.gibX(); // X-Position des Balls
-        double ballY = ball.gibY(); // Y-Position des Balls
-        double ballZ = ball.gibZ(); // Z-Position des Balls
-        double radius = ball.gibRadius(); // Radius des Balls
+        double ballX = ball.gibX();
+        double ballY = ball.gibY();
+        double ballZ = ball.gibZ();
+        double radius = ball.gibRadius();
 
         // Position des Quaders
-        double quaderX = quader.gibX(); // X-Position des Quaders
-        double quaderY = quader.gibY(); // Y-Position des Quaders
-        double quaderZ = quader.gibZ(); // Z-Position des Quaders
+        double quaderX = quader.gibX();
+        double quaderY = quader.gibY();
+        double quaderZ = quader.gibZ();
 
         // Halbe Abmessungen des Quaders
-        double halbeBreite = quaderBreite / 2; // Halbe Breite des Quaders
-        double halbeHoehe = quaderHoehe / 2; // Halbe Höhe des Quaders
-        double halbeTiefe = quaderTiefe / 2; // Halbe Tiefe des Quaders
+        double halbeBreite = quaderBreite / 2;
+        double halbeHoehe = quaderHoehe / 2;
+        double halbeTiefe = quaderTiefe / 2;
 
         // Nächstgelegener Punkt auf dem Quader zur Kugel
-        double naechsterX = Math.max(quaderX - halbeBreite, Math.min(ballX, quaderX + halbeBreite)); // X-Koordinate des nächsten Punkts
-        double naechsterY = Math.max(quaderY - halbeHoehe, Math.min(ballY, quaderY + halbeHoehe)); // Y-Koordinate des nächsten Punkts
-        double naechsterZ = Math.max(quaderZ - halbeTiefe, Math.min(ballZ, quaderZ + halbeTiefe)); // Z-Koordinate des nächsten Punkts
+        double naechsterX = Math.max(quaderX - halbeBreite, Math.min(ballX, quaderX + halbeBreite));
+        double naechsterY = Math.max(quaderY - halbeHoehe, Math.min(ballY, quaderY + halbeHoehe));
+        double naechsterZ = Math.max(quaderZ - halbeTiefe, Math.min(ballZ, quaderZ + halbeTiefe));
 
         // Entfernung zwischen Kugelmittelpunkt und nächstgelegenem Punkt
-        double deltaX = ballX - naechsterX; // Abstand in X-Richtung
-        double deltaY = ballY - naechsterY; // Abstand in Y-Richtung
-        double deltaZ = ballZ - naechsterZ; // Abstand in Z-Richtung
+        double deltaX = ballX - naechsterX;
+        double deltaY = ballY - naechsterY;
+        double deltaZ = ballZ - naechsterZ;
         double entfernung = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ); // Gesamtentfernung
 
         // Kollision wenn Entfernung <= Radius
@@ -245,14 +245,14 @@ public class BowlingSpiel {
      */
     private boolean kollisionErkannt(BowlingPin pin1, BowlingPin pin2) {
         // Positionen der Pins
-        double pin1X = pin1.gibX(); // X-Position des ersten Pins
-        double pin1Z = pin1.gibZ(); // Z-Position des ersten Pins
-        double pin2X = pin2.gibX(); // X-Position des zweiten Pins
-        double pin2Z = pin2.gibZ(); // Z-Position des zweiten Pins
+        double pin1X = pin1.gibX();
+        double pin1Z = pin1.gibZ();
+        double pin2X = pin2.gibX();
+        double pin2Z = pin2.gibZ();
 
         // Abstand zwischen den Pins
-        double deltaX = pin1X - pin2X; // Abstand in X-Richtung
-        double deltaZ = pin1Z - pin2Z; // Abstand in Z-Richtung
+        double deltaX = pin1X - pin2X;
+        double deltaZ = pin1Z - pin2Z;
         double entfernung = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ); // Gesamtentfernung zwischen den Pins
 
         // Kollision, wenn der Abstand kleiner als 5 ist
@@ -278,39 +278,39 @@ public class BowlingSpiel {
     }
 
     /**
-     * Setzt das Spielfeld manuell zurück, wenn die Taste 'r' gedrückt wird.
+     * Setzt das Spielfeld zurück, wenn die Taste 'r' gedrückt wird.
      */
     private void reset() {
-        // Pins, Ball, Kamera und (Scoreboard) zurücksetzen mit der Taste r
-        if (input.istGedrueckt('r')) { // Wenn die Taste r gedrückt wird
-            for (BowlingPin pin : pins) { // Schleife über alle Pins
-                pin.zuruecksetzen(); // Setzt jeden Pin zurück
+        // Pins, Ball und Kamera zurücksetzen mit der Taste r
+        if (input.istGedrueckt('r')) {
+            for (BowlingPin pin : pins) {
+                pin.zuruecksetzen();
             }
             ball.setzePosition(0, 5, -200); // Setzt den Ball auf die Startposition zurück
             ball.setzeWinkel(0); // Setzt den Winkel des Balls auf 0 Grad zurück
             steuerung.setzePosition(0, 100, -325); // Setzt die Kamera auf die Standardposition zurück
             steuerung.setzeBlickpunkt(0, 0, 0); // Setzt den Blickpunkt der Kamera auf die Mitte der Bahn
-            System.out.println("Alle Pins, Ball und Kamera wurden zurückgesetzt."); // Ausgabe in der Konsole
-            Sys.warte(1000); // Wartet 1 Sekunde
+            System.out.println("Alle Pins, Ball und Kamera wurden zurückgesetzt.");
+            Sys.warte(1000);
         }
     }
 
     /**
-     * Setzt das komplette Spiel manuell zurück, wenn die Taste 't' gedrückt wird
+     * Setzt das komplette Spiel zurück, wenn die Taste 't' gedrückt wird
      */
     private void komplettreset() {
         // Pins, Ball, Kamera und Scoreboard zurücksetzen mit der Taste t
-        if (input.istGedrueckt('t')) { // Wenn die Taste t gedrückt wird
-            for (BowlingPin pin : pins) { // Schleife über alle Pins
-                pin.zuruecksetzen(); // Setzt jeden Pin zurück
+        if (input.istGedrueckt('t')) {
+            for (BowlingPin pin : pins) {
+                pin.zuruecksetzen();
             }
             ball.setzePosition(0, 5, -200); // Setzt den Ball auf die Startposition zurück
             ball.setzeWinkel(0); // Setzt den Winkel des Balls auf 0 Grad zurück
             steuerung.setzePosition(0, 100, -325); // Setzt die Kamera auf die Standardposition zurück
             steuerung.setzeBlickpunkt(0, 0, 0); // Setzt den Blickpunkt der Kamera auf die Mitte der Bahn
             scoreboard.zuruecksetzenPunkte(); // Scoreboard zurücksetzen
-            System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt."); // Ausgabe in der Konsole
-            Sys.warte(1000); // Wartet 1 Sekunde
+            System.out.println("Alle Pins, Ball, Kamera und Scoreboard wurden zurückgesetzt.");
+            Sys.warte(1000);
         }
     }
 }
